@@ -1,0 +1,62 @@
+<style>
+
+  body {
+    margin: 0;
+    background-color: black;
+  }
+
+  #main {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 10px solid white;
+  }
+
+  #time {
+    color: white;
+    font: 64px "Menlo", sans-serif;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  #time.visible {
+    opacity: 1;
+  }
+
+</style>
+
+<div id="main">
+  <div id="time"></div>
+</div>
+
+<script>
+
+function setTime(div) {
+  div.innerHTML = new Date().toLocaleTimeString()
+}
+
+function random(max) {
+  return Math.round(Math.random() * max)
+}
+
+function randomRgb(max) {
+  return "rgb(" + random(max) + ", " + random(max) + ", " + random(max) + ")"
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const main = document.getElementById("main")
+    const time = document.getElementById("time")
+    setTime(time)
+    time.className = "visible"
+    setInterval(() => {
+      setTime(time)
+      main.style.backgroundColor = randomRgb(50)
+    }, 1000)
+  }, 200)
+})
+
+</script>
