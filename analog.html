@@ -48,8 +48,8 @@
   #hour {
     position: absolute;
     bottom: 100%;
-    left: -6px;
-    width: 12px;
+    left: -5px;
+    width: 10px;
     height: 100px;
     background-color: rgba(255, 255, 255, .5);
     transform-origin: bottom;
@@ -70,7 +70,7 @@
   function setTime(hour, minute, second) {
     const date = new Date()
     const seconds = date.getSeconds() + date.getMinutes() * 60 + date.getHours() * 60 * 60
-    hour.style.transform = "rotate(" + (360 * (date.getHours() / 12) + 30 * (date.getMinutes() / 60) + ((1 / 12 / 60) * 360) * (date.getSeconds() / 60)) + "deg) translateY(6px)"
+    hour.style.transform = "rotate(" + (360 * (date.getHours() / 12) + 30 * (date.getMinutes() / 60) + ((1 / 12 / 60) * 360) * (date.getSeconds() / 60)) + "deg) translateY(5px)"
     minute.style.transform = "rotate(" + (360 * (date.getMinutes() / 60) + 6 * (date.getSeconds() / 60)) + "deg) translateY(3px)"
     second.style.transform = "rotate(" + (360 * (date.getSeconds() / 60)) + "deg) translateY(31px)"
   }
