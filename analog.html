@@ -1,0 +1,102 @@
+<style>
+
+  body {
+    margin: 0;
+    background-color: black;
+  }
+
+  #main {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 10px solid rgba(255, 255, 255, .5);
+  }
+
+  #time {
+    position: relative;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  #time.visible {
+    opacity: 1;
+  }
+
+  #second {
+    position: absolute;
+    bottom: 100%;
+    left: -1px;
+    width: 2px;
+    height: 230px;
+    background-color: rgba(255, 255, 255, .5);
+    transform-origin: bottom;
+  }
+
+  #minute {
+    position: absolute;
+    bottom: 100%;
+    left: -3px;
+    width: 6px;
+    height: 190px;
+    background-color: rgba(255, 255, 255, .5);
+    transform-origin: bottom;
+  }
+
+  #hour {
+    position: absolute;
+    bottom: 100%;
+    left: -6px;
+    width: 12px;
+    height: 100px;
+    background-color: rgba(255, 255, 255, .5);
+    transform-origin: bottom;
+  }
+
+</style>
+
+<div id="main">
+  <div id="time">
+    <div id="hour"></div>
+    <div id="minute"></div>
+    <div id="second"></div>
+  </div>
+</div>
+
+<script>
+
+  function setTime(hour, minute, second) {
+    const date = new Date()
+    const seconds = date.getSeconds() + date.getMinutes() * 60 + date.getHours() * 60 * 60
+    hour.style.transform = "rotate(" + (360 * (date.getHours() / 12) + 30 * (date.getMinutes() / 60) + ((1 / 12 / 60) * 360) * (date.getSeconds() / 60)) + "deg) translateY(6px)"
+    minute.style.transform = "rotate(" + (360 * (date.getMinutes() / 60) + 6 * (date.getSeconds() / 60)) + "deg) translateY(3px)"
+    second.style.transform = "rotate(" + (360 * (date.getSeconds() / 60)) + "deg) translateY(31px)"
+  }
+
+  function random(max) {
+    return Math.round(Math.random() * max)
+  }
+
+  function randomRgb(max) {
+    return "rgb(" + random(max) + ", " + random(max) + ", " + random(max) + ")"
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      const main = document.getElementById("main")
+      const time = document.getElementById("time")
+      const hour = document.getElementById("hour")
+      const minute = document.getElementById("minute")
+      const second = document.getElementById("second")
+      setTime(hour, minute, second)
+      time.className = "visible"
+      setInterval(() => {
+        setTime(hour, minute, second)
+        main.style.backgroundColor = randomRgb(50)
+      }, 1000)
+    }, 200)
+  })
+
+</script>
