@@ -1,0 +1,76 @@
+<style>
+
+  body {
+    margin: 0;
+    background-color: black;
+  }
+
+  #main {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #main > div {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: transform 1s linear, opacity .1s linear;
+  }
+
+</style>
+
+<div id="main"></div>
+
+<script>
+
+function random(max) {
+  return Math.round(Math.random() * max)
+}
+
+function randomRgb(max) {
+  return "rgb(" + random(max) + ", " + random(max) + ", " + random(max) + ")"
+}
+
+function randomDirection() {
+  return ["top", "right", "bottom", "left"][random(4)]
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  let dotCount = 1
+
+  setTimeout(() => {
+
+    const main = document.getElementById("main")
+
+    for (let i = 0; i < dotCount; i++) {
+      main.appendChild(document.createElement("div"))
+    }
+
+    setInterval(() => {
+      if (dotCount < 100) {
+        dotCount++
+        main.appendChild(document.createElement("div"))
+      }
+
+      let dots = main.getElementsByTagName("div")
+
+      for (let i = 0; i < dotCount; i++) {
+        dots[i].style.transform = "translate(" + (20 + random(window.innerWidth - 50)) + "px, " + (20 + random(window.innerHeight - 50)) + "px)"
+        dots[i].style.opacity = Math.random()
+      }
+      main.style.backgroundColor = randomRgb(50)
+    }, 100)
+
+  }, 200)
+
+})
+
+</script>
