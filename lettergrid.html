@@ -1,0 +1,173 @@
+<style>
+
+  body {
+    margin: 0;
+    background-color: #111;
+  }
+
+  #main {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-flow: row wrap;
+  }
+
+  #main > div {
+    font-family: Monaco, monospace;
+    color: #222;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+  }
+
+</style>
+
+<div id="main"></div>
+
+<script>
+
+function random(max) {
+  return Math.round(Math.random() * max)
+}
+
+const gcd = (a, b) => {
+    const impl = (ai, bi) => ai ? impl(bi % ai, ai) : bi;
+    // handle also case when a or b is 0 from the beginning
+    return impl(Math.min(a, b), Math.max(a, b))
+};
+
+const factor = (v0) => {
+    let v = v0;
+    let factors = [1];
+
+    const addFactors = (fs) => {
+        if (fs.length > 0) {
+            // pre-allocate space
+            let newFactors = new Array(factors.length * fs.length);
+            let o = 0;
+            for (let i = 0; i < factors.length; i++)
+                newFactors[o++] = factors[i];
+
+            for (let i = 0; i < factors.length; i++) {
+                for (let j = 0; j < fs.length; j++) {
+                    newFactors[o++] = factors[i] * fs[j];
+                }
+            }
+            factors = newFactors;
+        }
+    };
+
+    const addFactorPows = (f) => {
+        // find all powers of the factor
+        // Example; v = 12, f = 2
+        // We want pows to be [2, 4]
+        // This is important for addFactors to work correctly
+        let p = 1;
+        let pows = [];
+
+        while (v % f === 0) {
+            v /= f;
+            p *= f;
+            pows.push(p);
+        }
+        addFactors(pows);
+        return (pows.length !== 0);
+    };
+
+    addFactorPows(2);
+
+    let s = Math.floor(Math.sqrt(v));
+    for (let i = 3; i <= s; i += 2) {
+        if (addFactorPows(i)) {
+            s = Math.floor(Math.sqrt(v));
+        }
+    }
+    // probably add the last prime, unless there was a perfect square and v = 1
+    if (v !== 1)
+        addFactorPows(v);
+
+    return factors.sort((a, b) => (a - b));
+};
+
+const commonFactors = (a, b) => {
+    const g = gcd(a, b);
+    return factor(g).reverse();
+};
+
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()-=_+[]{};'\":/?.<,>`~"
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  setTimeout(() => {
+
+    const main = document.getElementById("main")
+
+    const factors = commonFactors(screen.width, screen.height)
+    let sizeIndex = 0
+    let size = factors[sizeIndex]
+    let total = (screen.width / size) * (screen.height / size)
+
+    while (total < 200) {
+      sizeIndex++
+      size = factors[sizeIndex]
+      total = (screen.width / size) * (screen.height / size)
+    }
+
+    const rowSize = screen.width / size
+    const rowCount = screen.height / size
+
+    for (let i = 0; i < total; i++) {
+      let div = document.createElement("div")
+      div.style.cssText = "width: " + size + "px; height: " + size + "px; line-height: " + size + "px; font-size: " + size / 2 + "px"
+      div.innerText = characters[random(characters.length - 1)]
+      div.style.color = "hsla(" + random(255) + ", " + random(100) + "%, 20%, 1)"
+      main.appendChild(div)
+    }
+
+    let divs = main.getElementsByTagName("div")
+
+    let now = new Date()
+    let timeString = now.toLocaleTimeString()
+    for (let i = rowSize * (rowCount - 2) + 1, j = 0; j < timeString.length; i++, j++) {
+      if (timeString[j] !== " ") {
+        divs[i].innerText = timeString[j]
+        divs[i].style.color = "#fff"
+      }
+    }
+    let dateString = months[now.getMonth()].toUpperCase() + " " + now.getDate()
+    for (let i = rowSize * 2 - dateString.length - 1, j = 0; j < dateString.length; i++, j++) {
+      if (dateString[j] !== " ") {
+        divs[i].innerText = dateString[j]
+        divs[i].style.color = "#fff"
+      }
+    }
+
+    setInterval(() => {
+      now = new Date()
+      timeString = now.toLocaleTimeString()
+      dateString = months[now.getMonth()].toUpperCase() + " " + now.getDate()
+      for (let i = 0; i < total; i++) {
+        divs[i].innerText = characters[random(characters.length - 1)]
+        divs[i].style.color = "hsla(" + random(255) + ", " + random(100) + "%, 20%, 1)"
+      }
+      for (let i = rowSize * (rowCount - 2) + 1, j = 0; j < timeString.length; i++, j++) {
+        if (timeString[j] !== " ") {
+          divs[i].innerText = timeString[j]
+          divs[i].style.color = "#fff"
+        }
+      }
+      for (let i = rowSize * 2 - dateString.length - 1, j = 0; j < dateString.length; i++, j++) {
+        if (dateString[j] !== " ") {
+          divs[i].innerText = dateString[j]
+          divs[i].style.color = "#fff"
+        }
+      }
+    }, 1000)
+
+  }, 200)
+
+})
+
+</script>
