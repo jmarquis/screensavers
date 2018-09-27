@@ -1,0 +1,112 @@
+<style>
+
+  body {
+    margin: 0;
+    background-color: black;
+  }
+
+  #main {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+  }
+
+  #bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    opacity: 0;
+    transition: opacity 10s ease;
+    transform: translate3d(0, 0, 0);
+  }
+
+  #date {
+    color: white;
+    font: 12px "Avenir Next";
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    position: absolute;
+    bottom: 5%;
+    left: 4%;
+    margin-bottom: 44px;
+    opacity: 0;
+    transition: opacity 1s ease;
+    transform: translate3d(0, 0, 0);
+  }
+
+  #time {
+    color: white;
+    font: 32px "Menlo", sans-serif;
+    opacity: 0;
+    transition: opacity 1s ease;
+    position: absolute;
+    bottom: 5%;
+    left: 4%;
+    letter-spacing: 20px;
+    transform: translate3d(0, 0, 0);
+  }
+
+  #bg.visible,
+  #time.visible,
+  #date.visible {
+    opacity: 1;
+  }
+
+</style>
+
+<div id="main">
+  <div id="bg"></div>
+  <div id="date"></div>
+  <div id="time"></div>
+</div>
+
+<script>
+
+function setTime(div) {
+  div.innerHTML = new Date().toLocaleTimeString()
+}
+
+function random(min, max) {
+  return min + Math.round(Math.random() * (max - min))
+}
+
+function randomHsl(hue) {
+  return "hsl(" + hue + ", 60%, 20%)"
+}
+
+function randomGradient(hue) {
+  return "linear-gradient(to top right, black, " + randomHsl(hue) + ")"
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+  const initialDate = new Date()
+  document.getElementById("date").innerHTML = months[initialDate.getMonth()] + " " + initialDate.getDay() + ", " + initialDate.getFullYear()
+
+  let currentHue = random(0, 360)
+
+  setTimeout(() => {
+    const bg = document.getElementById("bg")
+    const time = document.getElementById("time")
+    const date = document.getElementById("date")
+    setTime(time)
+    bg.className = "visible"
+    time.className = "visible"
+    date.className = "visible"
+    setInterval(() => {
+      setTime(time)
+      bg.style.backgroundImage = randomGradient(currentHue)
+      currentHue += 1
+      if (currentHue >= 360) currentHue = 0
+    }, 1000)
+  }, 200)
+
+})
+
+</script>
