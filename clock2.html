@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
   const initialDate = new Date()
-  document.getElementById("date").innerHTML = months[initialDate.getMonth()] + " " + initialDate.getDay() + ", " + initialDate.getFullYear()
+  document.getElementById("date").innerHTML = months[initialDate.getMonth()] + " " + initialDate.getDate() + ", " + initialDate.getFullYear()
 
   let currentHue = random(0, 360)
 
