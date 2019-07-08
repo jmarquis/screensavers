@@ -1,0 +1,92 @@
+<style>
+
+  body {
+    margin: 0;
+    background-color: black;
+  }
+
+  #main {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+  }
+
+  #bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    opacity: 0;
+    transition: opacity 10s ease;
+    transform: translate3d(0, 0, 0);
+  }
+
+  #time {
+    color: white;
+    font: 18px "Menlo", sans-serif;
+    opacity: 0;
+    transition: opacity 1s ease;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    letter-spacing: 7vw;
+    white-space: nowrap;
+    padding-left: 7vw;
+  }
+
+  #bg.visible,
+  #time.visible {
+    opacity: 1;
+  }
+
+</style>
+
+<div id="main">
+  <div id="bg"></div>
+  <div id="time"></div>
+</div>
+
+<script>
+
+function setTime(div) {
+  const date = new Date()
+  const hours = (date.getHours() % 12) || 12
+  let minutes = date.getMinutes()
+  if (minutes.toString().length < 2) minutes = "0" + minutes.toString()
+  let seconds = date.getSeconds()
+  if (seconds.toString().length < 2) seconds = "0" + seconds.toString()
+  div.innerHTML = hours + " " + minutes + " " + seconds
+}
+
+function random(min, max) {
+  return min + Math.round(Math.random() * (max - min))
+}
+
+function randomBg(hue) {
+  return "linear-gradient(to bottom left, hsl(" + hue + ", 40%, 20%), hsl(" + hue + ", 60%, 10%))"
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  let currentHue = random(0, 360)
+
+  setTimeout(() => {
+    const bg = document.getElementById("bg")
+    const time = document.getElementById("time")
+    setTime(time)
+    bg.className = "visible"
+    time.className = "visible"
+    setInterval(() => {
+      setTime(time)
+      bg.style.background = randomBg(currentHue)
+      currentHue += 1
+      if (currentHue >= 360) currentHue = 0
+    }, 1000)
+  }, 200)
+
+})
+
+</script>
