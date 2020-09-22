@@ -53,24 +53,6 @@
     opacity: 1;
   }
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    25% {
-      transform: rotate(90deg);
-    }
-    50% {
-      transform: rotate(180deg);
-    }
-    75% {
-      transform: rotate(270deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
   #time {
     color: white;
     font: 24px "Menlo", sans-serif;
@@ -118,7 +100,7 @@
 
 <script>
 
-function setTime(timeDiv, dateDiv) {
+function setTime(timeDiv, dateDiv, bg) {
   const date = new Date()
   const hours = (date.getHours() % 12) || 12
   let minutes = date.getMinutes()
@@ -127,18 +109,8 @@ function setTime(timeDiv, dateDiv) {
   if (seconds.toString().length < 2) seconds = "0" + seconds.toString()
   timeDiv.innerHTML = hours + "<span>:</span>" + minutes + "<span>:</span>" + seconds
   dateDiv.innerHTML = (date.getMonth() + 1) + "<span>/</span>" + date.getDate()
-}
-
-function random(min, max) {
-  return min + Math.round(Math.random() * (max - min))
-}
-
-function randomBg(hue) {
-  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    return "linear-gradient(to bottom left, hsl(" + hue + ", 40%, 10%), hsl(" + hue + ", 60%, 5%))"
-  } else {
-    return "linear-gradient(to bottom left, hsl(" + hue + ", 5%, 99%), hsl(" + hue + ", 10%, 80%))"
-  }
+  const timeDegrees = (90 + ((date.getMinutes() + (date.getSeconds() / 60)) * (360 / 60))).toFixed(2)
+  bg.style.transform = `rotate(${timeDegrees}deg)`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -148,15 +120,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const bg = document.getElementById("bg")
     const time = document.getElementById("time")
     const date = document.getElementById("date")
-    const timeDegrees = 90 + Math.round((new Date()).getSeconds() * (360 / 60))
-    bg.style.transform = `rotate(${timeDegrees}deg)`;
-    setTime(time, date)
+    setTime(time, date, bg)
     body.className = "visible"
     bg.className = "visible"
     time.className = "visible"
     date.className = "visible"
     setInterval(() => {
-      setTime(time, date)
+      setTime(time, date, bg)
     }, 1000)
   }, 200)
 
