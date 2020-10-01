@@ -114,7 +114,7 @@ function setTime(timeDiv, dateDiv, minute, hour) {
   const minuteDegrees = (90 + ((date.getMinutes() + (date.getSeconds() / 60)) * (360 / 60))).toFixed(2)
   minute.style.transform = `rotate(${minuteDegrees}deg)`;
 
-  const hourDegrees = (90 + ((date.getHours() + 1 + (date.getMinutes() / 60)) * (360 / 12))).toFixed(2)
+  const hourDegrees = (90 + ((date.getHours() + (date.getMinutes() / 60)) * (360 / 12))).toFixed(2)
   hour.style.transform = `rotate(${hourDegrees}deg)`;
 
 }
