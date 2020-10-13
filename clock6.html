@@ -1,0 +1,161 @@
+<style>
+
+  body {
+    margin: 0;
+    background-color: black;
+  }
+
+  #main {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+  }
+
+  #bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    opacity: 0;
+    transition: opacity 3s ease;
+    will-change: opacity;
+  }
+
+  .visible #bg {
+    opacity: 1;
+  }
+
+  #outer,
+  #mid,
+  #inner {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: center;
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+
+  #outer {
+    width: 400px;
+    height: 400px;
+    transition: opacity 5s ease 2s;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjAwIDB2NDVsLTIuNTYzLjAyQzExMy4wMTUgNDYuMzkgNDUgMTE1LjI1MyA0NSAyMDBjMCA4NS42MDQgNjkuMzk2IDE1NSAxNTUgMTU1czE1NS02OS4zOTYgMTU1LTE1NWg0NWMwIDExMC40NTctODkuNTQzIDIwMC0yMDAgMjAwUzAgMzEwLjQ1NyAwIDIwMCA4OS41NDMgMCAyMDAgMHoiIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==");
+  }
+
+  .visible #outer {
+    opacity: .1;
+  }
+
+  #mid {
+    width: 370px;
+    height: 370px;
+    transition: opacity 2s ease 3s;
+  }
+
+  #mid::after {
+    content: "";
+    display: block;
+    width: 370px;
+    height: 370px;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzcwIiBoZWlnaHQ9IjM3MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTg1IDB2NTQuMDA0bC0xLjY3NS4wMTRjLTcwLjg5OSAxLjE0NS0xMjguMTU4IDU4LjE4Ni0xMjkuMzA3IDEyOC44MTZMNTQgMTg1YzAgNzIuMzUgNTguODc1IDEzMSAxMzEuNSAxMzFTMzE3IDI1Ny4zNSAzMTcgMTg1aDUzYzAgMTAyLjE3My04Mi44MjcgMTg1LTE4NSAxODVTMCAyODcuMTczIDAgMTg1IDgyLjgyNyAwIDE4NSAweiIgZmlsbD0iI0ZGRiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+");
+    transform-origin: center;
+    animation: 60s infinite linear spin;
+  }
+
+  .visible #mid {
+    opacity: .2;
+  }
+
+  #inner {
+    width: 340px;
+    height: 340px;
+    transition: opacity 10s ease 1s;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzQwIiBoZWlnaHQ9IjM0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTcwIDBsLjAwMSA2OS4wMDFMMTY5LjUgNjlDMTEzLjk5NSA2OSA2OSAxMTMuOTk1IDY5IDE2OS41UzExMy45OTUgMjcwIDE2OS41IDI3MGM1NS4zMzggMCAxMDAuMjI5LTQ0LjcyNSAxMDAuNDk5LTk5Ljk5OUwzNDAgMTcwYzAgOTMuODg4LTc2LjExMiAxNzAtMTcwIDE3MFMwIDI2My44ODggMCAxNzAgNzYuMTEyIDAgMTcwIDB6IiBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=");
+  }
+
+  .visible #inner {
+    opacity: .15;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(90deg);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+    75% {
+      transform: rotate(270deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+</style>
+
+<div id="main">
+  <div id="bg"></div>
+  <div id="outer"></div>
+  <div id="mid"></div>
+  <div id="inner"></div>
+</div>
+
+<script>
+
+function setTime(outer, mid, inner) {
+  const date = new Date()
+
+  const minuteDegrees = (-45 + ((date.getMinutes() + (date.getSeconds() / 60)) * (360 / 60))).toFixed(2)
+  outer.style.transform = `translate(-50%, -50%) rotate(${minuteDegrees}deg)`
+
+  // const secondDegrees = (-45 + ((date.getSeconds() * (360 / 60)))).toFixed(2)
+  // mid.style.transform = `translate(-50%, -50%) rotate(${secondDegrees}deg)`
+
+  const hourDegrees = (-45 + ((date.getHours() + (date.getMinutes() / 60)) * (360 / 12))).toFixed(2)
+  inner.style.transform = `translate(-50%, -50%) rotate(${hourDegrees}deg)`
+}
+
+function random(min, max) {
+  return min + Math.round(Math.random() * (max - min))
+}
+
+function randomBg(hue) {
+  return "radial-gradient(circle at top, hsl(" + hue + ", 35%, 10%), hsl(" + hue + ", 50%, 3%))"
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  let currentHue = random(0, 360)
+
+  setTimeout(() => {
+    const body = document.documentElement
+    const bg = document.getElementById("bg")
+    const outer = document.getElementById("outer")
+    const mid = document.getElementById("mid")
+    const inner = document.getElementById("inner")
+    setTime(outer, mid, inner)
+    const secondDegrees = (-45 + ((new Date().getSeconds() * (360 / 60)))).toFixed(2)
+    mid.style.transform = `translate(-50%, -50%) rotate(${secondDegrees}deg)`
+    bg.style.backgroundImage = randomBg(currentHue)
+    body.className = "visible"
+    setInterval(() => {
+      setTime(outer, mid, inner)
+      bg.style.backgroundImage = randomBg(currentHue)
+      currentHue += 1
+      if (currentHue >= 360) currentHue = 0
+    }, 1000)
+  }, 200)
+
+})
+
+</script>
